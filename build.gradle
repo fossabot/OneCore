@@ -1,99 +1,117 @@
+/*
+* WCore
+* Copyright (C) 2021 EthanLibs And W-OVERFLOW
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as published
+* by the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public License
+* along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 plugins {
-    id "java"
     id "com.github.johnrengelman.shadow" version "6.1.0"
-    id "net.minecraftforge.gradle.forge" version "86b2392"
-    id "org.jetbrains.kotlin.jvm" version "1.5.31"
+    id "com.github.gmazzo.buildconfig" version "3.0.1"
+    id "org.jetbrains.kotlin.jvm" version "1.6.0"
+    id "maven-publish"
+    id "java"
 }
 
-version = "1.0.0"
-group = "com.example"
-archivesBaseName = "ForgeTemplate"
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
-sourceCompatibility = targetCompatibility = 1.8
-compileJava.options.encoding = "UTF-8"
+allprojects {
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "com.github.gmazzo.buildconfig"
+    apply plugin: "org.jetbrains.kotlin.jvm"
+    apply plugin: "maven-publish"
+    apply plugin: "java"
 
-minecraft {
-    version = "1.8.9-11.15.1.2318-1.8.9"
-    runDir = "run"
-    mappings = "stable_22"
-    makeObfSourceJar = false
-}
+    version = project_ver
 
-configurations {
-    // Creates an extra configuration that implements `implementation` to be used later as the configuration that shades libraries
-    include
-    implementation.extendsFrom(include)
-}
+    group = project_group
 
-dependencies {
-    // WARNING: If you are confident the Kotlin Stdlib will already be on the classpath
-    // you can use implementation (This will not add the library to your jar decreasing the size)
-    // The Kotlin Stdlib is about 2MB
-    include "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    // How to normally add a dependency (If you don"t want it to be added to the jar)
-    // implementation "com.example:example:1.0.0"
-    // If you would like to include it (have the library inside your jar) instead use
-    // include "com.example:example:1.0.0"
-}
+    configurations {
+        compile
+        api.extendsFrom(compile)
 
-/**
- * This task simply replaces the `${version}` and `${mcversion}` properties in the mcmod.info with the data from Gradle
- */
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include "mcmod.info"
-
-        // replace version and mcversion
-        expand "version": project.version, "mcversion": project.minecraft.version
+        shade
+        implementation.extendsFrom(shade)
     }
 
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "mcmod.info"
+    repositories {
+        mavenCentral()
+        maven {
+            url = "https://repo.sk1er.club/repository/maven-public/"
+        }
+        maven {
+            url = "https://repo.spongepowered.org/maven/"
+        }
+        maven {
+            url = "https://jitpack.io/"
+        }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://maven.terraformersmc.com/releases/" }
     }
-}
 
-/**
- * This task simply moves resources so they can be accessed at runtime, Forge is quite weird isn"t it
- */
-task moveResources {
-    doLast {
-        ant.move file: "${buildDir}/resources/main",
-            todir: "${buildDir}/classes/java"
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        from {
+            'LICENSE'
+        }
+
+        exclude 'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'module-info.class'
     }
-}
 
-moveResources.dependsOn processResources
-classes.dependsOn moveResources
+    shadowJar {
+        archiveClassifier.set('')
+        configurations = [project.configurations.shade]
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-// This forces the build task to run shadowJar after
-tasks.reobfJar.dependsOn(tasks.shadowJar)
+        exclude('LICENSE.md')
+        exclude('pack.mcmeta')
+        exclude('dummyThing')
+        exclude('**/module-info.class')
+        exclude('*.so')
+        exclude('*.dylib')
+        exclude('*.dll')
+        exclude('*.jnilib')
+        exclude('ibxm/**')
+        exclude('com/jcraft/**')
+        exclude('org/lwjgl/**')
+        exclude('net/java/**')
 
-// This adds support to ("embed", "shade", "include") libraries into our JAR
-shadowJar {
-    archiveClassifier.set("")
-    configurations = [project.configurations.include]
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+        exclude('META-INF/proguard/**')
+        exclude('META-INF/maven/**')
+        exclude('META-INF/versions/**')
+        exclude('META-INF/com.android.tools/**')
 
-
-    exclude 'META-INF', 'META-INF/**'
-    exclude 'org/jetbrains/annotations', 'org/jetbrains/annotations/**'
-}
-repositories {
-    mavenCentral()
-}
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
+        exclude('**/*.kotlin_metadata')
+        exclude('**/*.kotlin_module')
+        exclude('**/*.kotlin_builtins')
     }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = "${project_name}-${project.name}"
+
+                artifact(shadowJar) {
+                    builtBy shadowJar
+                }
+
+                pom {
+                    name = "${project_name}-${project.name}"
+                }
+            }
+        }
     }
+
+    jar.finalizedBy(shadowJar)
 }
