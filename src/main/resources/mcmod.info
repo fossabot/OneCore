@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "${id}",
+    "name": "${name}",
+    "description": "Core modules for W-OVERFLOW mods.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/EthanDevelops/WCore",
+    "updateUrl": "https://github.com/EthanDevelops/WCore/releases/latest",
+    "authorList": [
+      "EthanDevelops"
+    ],
+    "screenshots": [],
+    "dependencies": []
+  }
+]
