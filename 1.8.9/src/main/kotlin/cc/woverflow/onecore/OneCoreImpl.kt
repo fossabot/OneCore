@@ -4,6 +4,8 @@ import cc.woverflow.onecore.api.OneCore
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
+import cc.woverflow.onecore.api.utils.FileHelper
+import cc.woverflow.onecore.api.utils.updater.Updater
 import me.kbrewster.eventbus.*
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
@@ -35,6 +37,12 @@ class OneCoreImpl : OneCore {
     override fun logger() = logger
     override fun eventBus() = eventBus
 
+    override fun fileHelper(): FileHelper {
+        TODO("Not yet implemented")
+    }
+    override fun updater(): Updater {
+        TODO("Not yet implemented")
+    }
     override fun elementaHud() = elementaHud
     override fun notifications() = notifications
     override fun httpClient() = httpClient

@@ -3,6 +3,8 @@ package cc.woverflow.onecore.api
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
+import cc.woverflow.onecore.api.utils.FileHelper
+import cc.woverflow.onecore.api.utils.updater.Updater
 import me.kbrewster.eventbus.EventBus
 import me.kbrewster.eventbus.Subscribe
 import okhttp3.OkHttpClient
@@ -19,6 +21,8 @@ interface OneCore {
     fun logger(): Logger
     fun eventBus(): EventBus
 
+    fun fileHelper(): FileHelper
+    fun updater(): Updater
     fun elementaHud(): ElementaHud
     fun notifications(): Notifications
     fun httpClient(): OkHttpClient
@@ -52,6 +56,8 @@ interface OneCore {
         @JvmStatic fun getLogger() = instance.logger()
         @JvmStatic fun getEventBus() = instance.eventBus()
 
+        @JvmStatic fun getFileHelper() = instance.fileHelper()
+        @JvmStatic fun getUpdater() = instance.updater()
         @JvmStatic fun getElementaHud() = instance.elementaHud()
         @JvmStatic fun getNotifications() = instance.notifications()
         @JvmStatic fun getHttpClient() = instance.httpClient()
