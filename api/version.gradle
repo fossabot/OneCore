@@ -185,21 +185,10 @@ processResources {
     rename("(.+_at.cfg)", "META-INF/\$1")
 }
 
-shadowJar {
-    relocate("me.kbrewster.eventbus.EventBus", "${projectGroup}.api.lib.keventbus")
-    relocate("com.github.benmanes.caffeine", "${projectGroup}.api.lib.caffeine")
-    relocate("gg.essential.universal", "${projectGroup}.api.lib.universalcraft")
-    relocate("xyz.deftu.quicksocket", "${projectGroup}.api.lib.quicksocket")
-    relocate("gg.essential.elementa", "${projectGroup}.api.lib.elementa")
-    relocate("org.java_websocket", "${projectGroup}.api.lib.websocket")
-    relocate("xyz.deftu.deftils", "${projectGroup}.api.lib.deftils")
-    relocate("okhttp3", "${projectGroup}.api.lib.okhttp")
-    relocate("okio", "${projectGroup}.api.lib.okio")
-}
-
 java {
     withJavadocJar()
     withSourcesJar()
 }
 
+apply from: "${rootProject.projectDir}/gradle/common/shadowrelocation.gradle"
 classes.dependsOn(processResources)

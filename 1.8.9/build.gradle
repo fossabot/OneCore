@@ -9,6 +9,7 @@ buildscript {
     }
 }
 
+apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "org.jetbrains.kotlin.jvm"
 apply plugin: "org.spongepowered.mixin"
@@ -28,6 +29,15 @@ minecraft {
     makeObfSourceJar = false
 
     clientRunArgs += "--mixin mixins.${projectId}.json"
+}
+
+configurations {
+    shade
+    implementation.extendsFrom(shade)
+}
+
+repositories {
+    maven { url("https://repo.woverflow.cc/") }
 }
 
 dependencies {
@@ -50,3 +60,12 @@ processResources {
         )
     }
 }
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveClassifier.set("")
+}
+
+apply from: "${rootProject.projectDir}/gradle/common/shadowrelocation.gradle"
+reobfJar.finalizedBy(shadowJar)
