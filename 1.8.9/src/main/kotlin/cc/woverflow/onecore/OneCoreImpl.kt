@@ -5,6 +5,7 @@ import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
 import cc.woverflow.onecore.api.utils.FileHelper
+import cc.woverflow.onecore.api.utils.JsonHelper
 import cc.woverflow.onecore.api.utils.updater.Updater
 import me.kbrewster.eventbus.*
 import net.minecraftforge.common.MinecraftForge
@@ -23,6 +24,7 @@ class OneCoreImpl : OneCore {
     private val eventBus = eventbus {  }
 
     private lateinit var fileHelper: FileHelper
+    private lateinit var jsonHelper: JsonHelper
     private lateinit var updater: Updater
     private lateinit var elementaHud: ElementaHud
     private lateinit var notifications: Notifications
@@ -32,6 +34,7 @@ class OneCoreImpl : OneCore {
         MinecraftForge.EVENT_BUS.register(ForgeEventExtender())
 
         fileHelper = FileHelper(event.gameDir)
+        jsonHelper = JsonHelper()
         updater = Updater()
         elementaHud = ElementaHud().also { it.initialize() }
         notifications = Notifications()
@@ -42,6 +45,7 @@ class OneCoreImpl : OneCore {
     override fun eventBus() = eventBus
 
     override fun fileHelper() = fileHelper
+    override fun jsonHelper() = jsonHelper
     override fun updater() = updater
     override fun elementaHud() = elementaHud
     override fun notifications() = notifications
