@@ -1,6 +1,5 @@
 pluginManagement {
     repositories {
-        maven("https://jitpack.io/")
         maven("https://repo.woverflow.cc/")
     }
     
