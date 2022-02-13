@@ -4,6 +4,7 @@ import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
 import cc.woverflow.onecore.api.utils.FileHelper
+import cc.woverflow.onecore.api.utils.JsonHelper
 import cc.woverflow.onecore.api.utils.updater.Updater
 import me.kbrewster.eventbus.EventBus
 import me.kbrewster.eventbus.Subscribe
@@ -22,6 +23,7 @@ interface OneCore {
     fun eventBus(): EventBus
 
     fun fileHelper(): FileHelper
+    fun jsonHelper(): JsonHelper
     fun updater(): Updater
     fun elementaHud(): ElementaHud
     fun notifications(): Notifications
@@ -57,6 +59,7 @@ interface OneCore {
         @JvmStatic fun getEventBus() = instance.eventBus()
 
         @JvmStatic fun getFileHelper() = instance.fileHelper()
+        @JvmStatic fun getJsonHelper() = instance.jsonHelper()
         @JvmStatic fun getUpdater() = instance.updater()
         @JvmStatic fun getElementaHud() = instance.elementaHud()
         @JvmStatic fun getNotifications() = instance.notifications()

@@ -5,28 +5,37 @@ package cc.woverflow.onecore.api.utils.updater
 //#endif
 import cc.woverflow.onecore.api.OneCore
 import gg.essential.universal.UDesktop
+import okhttp3.OkHttpClient
 import xyz.deftu.deftils.Multithreading
 import java.io.File
 
 class Updater {
     private val mods = mutableListOf<UpdaterMod>()
     private val outdated = mutableListOf<UpdaterMod>()
+    lateinit var httpClient: OkHttpClient
+        private set
+
+    fun initialize() {
+        httpClient = OkHttpClient.Builder()
+            .cache(null)
+            .addInterceptor { it.proceed(it.request().newBuilder().header("User-Agent", "Mozilla 4.76 (${OneCore.getName()}/${OneCore.getVersion()})").build()) }
+            .build()
+    }
 
     fun include(name: String, version: String, id: String, path: String, fetcher: UpdateFetcher, file: File) = mods.add(UpdaterMod(name, version, id, path, fetcher, file))
 
     fun check() {
+        val outdated = mutableListOf<UpdaterMod>()
         for (mod in mods) {
             Multithreading.runAsync {
-                mod.fetcher.check()
+                mod.fetcher.check(this, mod)
                 if (mod.fetcher.hasUpdate()) {
-                    OneCore.getNotifications().post(
-                        OneCore.getName(),
-                        "${mod.name} has an update available. Click to check."
-                    ) {
-                        // TODO - OneCore.getGuiHelper().showScreen(ModUpdateScreen(mod))
-                    }
+
                 }
             }
+
+            // TODO 2022/02/13 - OneCore.getGuiHelper().showScreen(ModUpdateListScreen(outdated))
+            // TODO 2022/02/13 - INSIDE THE MOD UPDATE LIST. - OneCore.getGuiHelper().showScreen(ModUpdateScreen(mod))
         }
 
         Runtime.getRuntime().addShutdownHook(Thread({
@@ -62,7 +71,7 @@ class Updater {
     }
 }
 
-internal data class UpdaterMod(
+data class UpdaterMod(
     val name: String,
     val version: String,
     val id: String,
