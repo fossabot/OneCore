@@ -16,9 +16,9 @@ import java.util.*
 interface OneCore {
     fun initialize(event: InitializationEvent)
 
-    fun version() = "@VERSION@"
-    fun name() = "@NAME@"
-    fun id() = "@ID@"
+    fun version() = "__VERSION__"
+    fun name() = "OneCore"
+    fun id() = "onecore"
 
     fun logger(): Logger
     fun eventBus(): EventBus

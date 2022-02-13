@@ -108,10 +108,7 @@ if (FABRIC) {
 }
 
 blossom {
-    def name = "versions/$mcVersionStr/src/main/kotlin/cc/woverflow/onecore/api/OneCore.kt"
-    replaceToken("@VERSION@", projectVersion, name)
-    replaceToken("@NAME@", projectName, name)
-    replaceToken("@ID@", projectId, name)
+    replaceToken("__VERSION__", projectVersion)
 }
 
 dependencies {

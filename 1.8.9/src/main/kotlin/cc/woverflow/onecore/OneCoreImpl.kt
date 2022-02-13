@@ -16,7 +16,7 @@ import org.apache.logging.log4j.LogManager
 
 @Mod(
     name = "OneCore",
-    version = "1.0.0",
+    version = "__VERSION__",
     modid = "onecore",
     clientSideOnly = true
 )
