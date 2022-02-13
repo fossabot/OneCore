@@ -12,11 +12,7 @@ buildscript {
     project.ext.forge = !fabric
 
     repositories {
-        mavenCentral()
-        maven { url "https://maven.fabricmc.net/" }
-        if (!fabric) maven { url "https://maven.minecraftforge.net/" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://jitpack.io" }
+        maven { url "https://repo.woverflow.cc/" }
     }
 
     dependencies {
