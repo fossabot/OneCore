@@ -1,157 +1,32 @@
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-
 plugins {
-    id "net.minecraftforge.gradle.forge" version "6f53277"
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
     id "com.github.johnrengelman.shadow" version "6.1.0"
-    id 'org.spongepowered.mixin' version "d5f9873"
+    id "org.jetbrains.kotlin.jvm" version "1.6.10"
     id "net.kyori.blossom" version "1.3.0"
     id "java"
 }
 
-version = mod_version
-group = "cc.woverflow"
-archivesBaseName = mod_name.toLowerCase(Locale.ENGLISH)
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-    }
-}
-
-java {
-    withSourcesJar()
-}
-
-blossom {
-    String className = "src/main/kotlin/cc/woverflow/onecore/OneCore.kt"
-    replaceToken("@VER@", project.version, className)
-    replaceToken("@NAME@", mod_name, className)
-    replaceToken("@ID@", mod_id, className)
-}
-
 sourceCompatibility = targetCompatibility = 1.8
-compileJava.options.encoding = 'UTF-8'
+compileJava.options.encoding = "UTF-8"
 
-minecraft {
-    version = "1.8.9-11.15.1.2318-1.8.9"
-    runDir = "run"
-    mappings = "stable_22"
-    makeObfSourceJar = false
-
-    clientRunArgs += "--mixin mixins.${mod_id}.json"
-}
-
-configurations {
-    // Creates an extra configuration that implements `implementation` to be used later as the configuration that shades libraries
-    include
-    implementation.extendsFrom(include)
-}
-
-repositories {
-    maven { url "https://repo.woverflow.cc/" }
-}
-
-dependencies {
-    /* External libraries. */
-    compileOnly("gg.essential:essential-1.8.9-forge:1852")
-
-    /* Core. */
-    compileOnly(annotationProcessor('org.spongepowered:mixin:0.8.5-SNAPSHOT'))
-
-    /* Utility. */
-    annotationProcessor("com.google.code.gson:gson:2.2.4")
-    annotationProcessor("com.google.guava:guava:21.0")
-    annotationProcessor("org.ow2.asm:asm-tree:6.2")
-    compileOnly("gg.essential:loader-launchwrapper:1.1.3") {
-        transitive = false
+allprojects {
+    apply plugin: "com.github.johnrengelman.shadow"
+    
+    configurations {
+        shade
+        implementation.extendsFrom(shade)
     }
 
-    /* Aether4j */
-    /*/
-    including these libraries takes up too much space for the repo to handle rn lol
-    include ("xyz.deftu.quicksocket:QuickSocket:1.1.0")
-    include ('com.github.PhilJay:JWT:1.1.5')
-    include ("org.java-websocket:Java-WebSocket:1.5.2")
-
-     */
-}
-
-/**
- * This task simply replaces the `${version}` and `${mcversion}` properties in the mcmod.info with the data from Gradle
- */
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property("version", version)
-    inputs.property("mcversion", minecraft.version)
-    inputs.property("name", mod_name)
-    inputs.property("id", mod_id)
-
-    filesMatching("mcmod.info") {
-        expand(
-                "id": mod_id,
-                "name": mod_name,
-                "version": version,
-                "mcversion": minecraft.version
-        )
+    repositories {
+        maven { url("https://repo.sk1er.club/repository/maven-releases/") }
+        maven { url("https://repo.sk1er.club/repository/maven-public") }
+        maven { url("https://repo.woverflow.cc/") }
     }
-
-    filesMatching("mixins.${mod_id}.json") {
-        expand("id": mod_id)
+    
+    shadowJar {
+        configurations = [project.configurations.shade]
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveClassifier.set("")
     }
-
-    rename '(.+_at.cfg)', 'META-INF/$1'
-}
-
-jar {
-    manifest.attributes(
-            'MixinConfigs': "mixins.${mod_id}.json"
-    )
-    jar.dependsOn shadowJar
-    enabled = false
-}
-
-/**
- * This task simply moves resources so they can be accessed at runtime, Forge is quite weird isn't it
- */
-task moveResources {
-    doLast {
-        ant.move file: "${buildDir}/resources/main",
-                todir: "${buildDir}/classes/kotlin"
-    }
-}
-
-moveResources.dependsOn processResources
-classes.dependsOn moveResources
-
-mixin {
-    disableRefMapWarning = true
-    defaultObfuscationEnv searge
-    add sourceSets.main, "mixins.${mod_id}.refmap.json"
-}
-
-// This adds support to ("include") libraries into our JAR
-shadowJar {
-    archiveClassifier.set('deobf')
-    configurations = [project.configurations.include]
-    duplicatesStrategy DuplicatesStrategy.EXCLUDE
-    doLast {
-        def file = new File("${buildDir}/libs")
-        if (!file.isFile()) {
-            for (File jar : file.listFiles()) {
-                if (jar.name.endsWith("-deobf.jar")) {
-                    Files.copy(jar.toPath(), Paths.get(new File(file, "${jar.name.substring(0, jar.name.indexOf("-deobf.jar"))}.jar").absolutePath), StandardCopyOption.REPLACE_EXISTING)
-                }
-            }
-        }
-    }
-}
-
-sourceSets {
-    main {
-        ext.refMap = "mixins.${mod_id}.refmap.json"
-    }
+    
+    jar.finalizedBy(shadowJar)
 }
