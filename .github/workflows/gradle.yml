@@ -43,6 +43,6 @@ jobs:
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-v2-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-gradle-v2
       - run: chmod +x ./gradlew
       - run: ./gradlew --no-daemon setupCiWorkspace build
