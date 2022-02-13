@@ -1,8 +1,6 @@
 buildscript {
     repositories {
-        maven { url("https://maven.minecraftforge.net/") }
-        maven { url("https://jitpack.io/") }
-        maven { url("https://repo.spongepowered.org/maven/") }
+        maven { url("https://repo.woverflow.cc") }
     }
 
     dependencies {
