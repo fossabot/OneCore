@@ -1,5 +1,6 @@
 package cc.woverflow.onecore.api
 
+import cc.woverflow.onecore.api.commands.CommandRegistry
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
@@ -7,6 +8,7 @@ import cc.woverflow.onecore.api.utils.FileHelper
 import cc.woverflow.onecore.api.utils.GuiHelper
 import cc.woverflow.onecore.api.utils.JsonHelper
 import cc.woverflow.onecore.api.utils.updater.Updater
+import com.google.gson.Gson
 import me.kbrewster.eventbus.EventBus
 import me.kbrewster.eventbus.Subscribe
 import okhttp3.OkHttpClient
@@ -21,6 +23,7 @@ interface OneCore {
     fun id() = "onecore"
 
     fun logger(): Logger
+    fun gson(): Gson
     fun eventBus(): EventBus
 
     fun fileHelper(): FileHelper
@@ -29,6 +32,7 @@ interface OneCore {
     fun guiHelper(): GuiHelper
     fun elementaHud(): ElementaHud
     fun notifications(): Notifications
+    fun commandRegistry(): CommandRegistry
     fun httpClient(): OkHttpClient
 
     companion object {
@@ -58,6 +62,7 @@ interface OneCore {
         @JvmStatic fun getId() = instance.id()
 
         @JvmStatic fun getLogger() = instance.logger()
+        @JvmStatic fun getGson() = instance.gson()
         @JvmStatic fun getEventBus() = instance.eventBus()
 
         @JvmStatic fun getFileHelper() = instance.fileHelper()
@@ -65,6 +70,7 @@ interface OneCore {
         @JvmStatic fun getUpdater() = instance.updater()
         @JvmStatic fun getGuiHelper() = instance.guiHelper()
         @JvmStatic fun getElementaHud() = instance.elementaHud()
+        @JvmStatic fun getCommandRegistry() = instance.commandRegistry()
         @JvmStatic fun getNotifications() = instance.notifications()
         @JvmStatic fun getHttpClient() = instance.httpClient()
     }
