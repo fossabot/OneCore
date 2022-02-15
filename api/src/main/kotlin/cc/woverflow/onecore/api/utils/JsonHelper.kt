@@ -1,5 +1,6 @@
 package cc.woverflow.onecore.api.utils
 
+import cc.woverflow.onecore.api.OneCore
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 
@@ -17,3 +18,15 @@ class JsonHelper {
         //#endif
     }
 }
+
+/**
+ * Return the string provided as a [JsonElement].
+ */
+fun String.toJsonSafe() = runCatching { return@runCatching this.toJson() }
+
+/**
+ * Return the string provided as a [JsonElement]
+ *
+ * @return string as a [JsonElement]
+ */
+fun String.toJson() = OneCore.getJsonHelper().parse(this)

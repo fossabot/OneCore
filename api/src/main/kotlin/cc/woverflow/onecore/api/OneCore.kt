@@ -4,15 +4,12 @@ import cc.woverflow.onecore.api.commands.CommandRegistry
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
-import cc.woverflow.onecore.api.utils.ColorHelper
-import cc.woverflow.onecore.api.utils.FileHelper
-import cc.woverflow.onecore.api.utils.GuiHelper
-import cc.woverflow.onecore.api.utils.JsonHelper
+import cc.woverflow.onecore.api.utils.*
+import cc.woverflow.onecore.api.utils.http.HttpRequester
 import cc.woverflow.onecore.api.utils.updater.Updater
 import com.google.gson.Gson
 import me.kbrewster.eventbus.EventBus
 import me.kbrewster.eventbus.Subscribe
-import okhttp3.OkHttpClient
 import org.apache.logging.log4j.Logger
 import java.util.*
 
@@ -34,7 +31,8 @@ interface OneCore {
     fun elementaHud(): ElementaHud
     fun notifications(): Notifications
     fun commandRegistry(): CommandRegistry
-    fun httpClient(): OkHttpClient
+    fun httpRequester(): HttpRequester
+    fun internetHelper(): InternetHelper
     fun colorHelper(): ColorHelper
 
     companion object {
@@ -74,7 +72,8 @@ interface OneCore {
         @JvmStatic fun getElementaHud() = instance.elementaHud()
         @JvmStatic fun getCommandRegistry() = instance.commandRegistry()
         @JvmStatic fun getNotifications() = instance.notifications()
-        @JvmStatic fun getHttpClient() = instance.httpClient()
+        @JvmStatic fun getHttpRequester() = instance.httpRequester()
+        @JvmStatic fun getInternetHelper() = instance.internetHelper()
         @JvmStatic fun getColorHelper() = instance.colorHelper()
     }
 }

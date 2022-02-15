@@ -5,13 +5,12 @@ import cc.woverflow.onecore.api.commands.CommandRegistry
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
-import cc.woverflow.onecore.api.utils.ColorHelper
-import cc.woverflow.onecore.api.utils.FileHelper
-import cc.woverflow.onecore.api.utils.GuiHelper
-import cc.woverflow.onecore.api.utils.JsonHelper
+import cc.woverflow.onecore.api.utils.*
+import cc.woverflow.onecore.api.utils.http.HttpRequester
 import cc.woverflow.onecore.api.utils.updater.Updater
 import cc.woverflow.onecore.commands.CommandRegistryImpl
 import cc.woverflow.onecore.commands.OneCoreCommand
+import cc.woverflow.onecore.utils.http.HttpRequesterImpl
 import com.google.gson.GsonBuilder
 import me.kbrewster.eventbus.*
 import net.minecraftforge.common.MinecraftForge
@@ -39,7 +38,8 @@ class OneCoreImpl : OneCore {
     private lateinit var elementaHud: ElementaHud
     private lateinit var notifications: Notifications
     private lateinit var commandRegistry: CommandRegistry
-    private lateinit var httpClient: OkHttpClient
+    private lateinit var httpRequester: HttpRequester
+    private lateinit var internetHelper: InternetHelper
     private lateinit var colorHelper: ColorHelper
 
     override fun initialize(event: InitializationEvent) {
@@ -52,7 +52,8 @@ class OneCoreImpl : OneCore {
         elementaHud = ElementaHud().also { it.initialize() }
         notifications = Notifications()
         commandRegistry = CommandRegistryImpl().also { it.registerCommand(OneCoreCommand()) }
-        httpClient = OkHttpClient()
+        httpRequester = HttpRequesterImpl()
+        internetHelper = InternetHelper()
         colorHelper = ColorHelper()
     }
 
@@ -67,6 +68,7 @@ class OneCoreImpl : OneCore {
     override fun elementaHud() = elementaHud
     override fun notifications() = notifications
     override fun commandRegistry() = commandRegistry
-    override fun httpClient() = httpClient
+    override fun httpRequester() = httpRequester
+    override fun internetHelper() = internetHelper
     override fun colorHelper() = colorHelper
 }

@@ -1,5 +1,6 @@
 package cc.woverflow.onecore.api.utils
 
+import cc.woverflow.onecore.api.OneCore
 import net.minecraft.client.gui.GuiScreen
 //#if MC<=11202
 import net.minecraftforge.common.MinecraftForge
@@ -34,3 +35,11 @@ class GuiHelper {
     private class PlaceholderScreen : GuiScreen()
     //#endif
 }
+
+//#if MC<=11202
+/**
+ * Queue a new screen to be opened.
+ * @see GuiHelper.showScreen
+ */
+fun GuiScreen.showScreen() = OneCore.getGuiHelper().showScreen(this)
+//#endif
