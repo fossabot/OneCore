@@ -4,6 +4,7 @@ import cc.woverflow.onecore.api.commands.CommandRegistry
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
+import cc.woverflow.onecore.api.utils.ColorUtils
 import cc.woverflow.onecore.api.utils.FileHelper
 import cc.woverflow.onecore.api.utils.GuiHelper
 import cc.woverflow.onecore.api.utils.JsonHelper
@@ -34,6 +35,7 @@ interface OneCore {
     fun notifications(): Notifications
     fun commandRegistry(): CommandRegistry
     fun httpClient(): OkHttpClient
+    fun colorUtils(): ColorUtils
 
     companion object {
         var initialized = false
@@ -73,5 +75,6 @@ interface OneCore {
         @JvmStatic fun getCommandRegistry() = instance.commandRegistry()
         @JvmStatic fun getNotifications() = instance.notifications()
         @JvmStatic fun getHttpClient() = instance.httpClient()
+        @JvmStatic fun getColorUtils() = instance.colorUtils()
     }
 }

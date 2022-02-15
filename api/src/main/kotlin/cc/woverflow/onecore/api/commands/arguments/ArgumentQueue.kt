@@ -4,7 +4,7 @@ import java.util.concurrent.LinkedBlockingDeque
 
 class ArgumentQueue(
     val arguments: List<String>
-) {
+) : Iterable<String> {
     private var initialized = false
     private lateinit var queue: LinkedBlockingDeque<String>
 
@@ -19,4 +19,10 @@ class ArgumentQueue(
     fun poll() = queue.poll()
     fun peek() = queue.peek()
     fun isEmpty() = queue.isEmpty()
+
+    override fun toString() = arguments.toString()
+
+    override fun iterator() = arguments.iterator()
+
+
 }

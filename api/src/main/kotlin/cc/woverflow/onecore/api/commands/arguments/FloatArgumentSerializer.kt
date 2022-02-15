@@ -4,6 +4,6 @@ import java.lang.reflect.Parameter
 
 class FloatArgumentSerializer : ArgumentSerializer<Float> {
     override fun parse(queue: ArgumentQueue, parameter: Parameter): Float {
-        return java.lang.Float.parseFloat(queue.poll())
+        return queue.poll().toFloat()
     }
 }

@@ -19,6 +19,7 @@ class CommandRegistryImpl : CommandRegistry {
         argumentSerializers[Float::class.java] = FloatArgumentSerializer()
         argumentSerializers[Int::class.java] = IntArgumentSerializer()
         argumentSerializers[String::class.java] = StringArgumentSerializer()
+        argumentSerializers[ArgumentQueue::class.java] = ArgumentsQueueSerializer()
     }
 
     override fun registerCommand(command: BaseCommand) {

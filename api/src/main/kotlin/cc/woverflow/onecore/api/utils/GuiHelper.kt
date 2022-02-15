@@ -31,6 +31,6 @@ class GuiHelper {
         }
     }
 
-    internal class PlaceholderScreen : GuiScreen()
+    private class PlaceholderScreen : GuiScreen()
     //#endif
 }
