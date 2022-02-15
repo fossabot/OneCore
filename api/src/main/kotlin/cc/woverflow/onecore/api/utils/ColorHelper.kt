@@ -2,12 +2,12 @@ package cc.woverflow.onecore.api.utils
 
 import java.awt.Color
 
-class ColorUtils {
+class ColorHelper {
 
     /**
      * @return A changing colour based on the users' computer time. Simulates a "chroma" colour.
      */
-    fun timeBasedChroma(): Int {
+    fun getChroma(): Int {
         val l = System.currentTimeMillis()
         return Color.HSBtoRGB(l % 2000L / 2000.0f, 1.0f, 1.0f)
     }

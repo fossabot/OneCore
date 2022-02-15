@@ -10,27 +10,27 @@ import java.net.URI
 /**
  * @return A changing colour based on the users' computer time. Simulates a "chroma" colour.
  */
-fun timeBasedChroma() = OneCore.getColorUtils().timeBasedChroma()
+fun getChroma() = OneCore.getColorHelper().getChroma()
 
 /**
  * @return The red value of the provided RGBA value.
  */
-fun Int.getRed() = OneCore.getColorUtils().getRed(this)
+fun Int.getRed() = OneCore.getColorHelper().getRed(this)
 
 /**
  * @return The green value of the provided RGBA value.
  */
-fun Int.getGreen() = OneCore.getColorUtils().getGreen(this)
+fun Int.getGreen() = OneCore.getColorHelper().getGreen(this)
 
 /**
  * @return The blue value of the provided RGBA value.
  */
-fun Int.getBlue() = OneCore.getColorUtils().getBlue(this)
+fun Int.getBlue() = OneCore.getColorHelper().getBlue(this)
 
 /**
  * @return The alpha value of the provided RGBA value.
  */
-fun Int.getAlpha() = OneCore.getColorUtils().getAlpha(this)
+fun Int.getAlpha() = OneCore.getColorHelper().getAlpha(this)
 
 /**
  * Open a website URL in the user's web browser.

@@ -5,7 +5,7 @@ import cc.woverflow.onecore.api.commands.CommandRegistry
 import cc.woverflow.onecore.api.events.InitializationEvent
 import cc.woverflow.onecore.api.gui.ElementaHud
 import cc.woverflow.onecore.api.gui.notifications.Notifications
-import cc.woverflow.onecore.api.utils.ColorUtils
+import cc.woverflow.onecore.api.utils.ColorHelper
 import cc.woverflow.onecore.api.utils.FileHelper
 import cc.woverflow.onecore.api.utils.GuiHelper
 import cc.woverflow.onecore.api.utils.JsonHelper
@@ -40,7 +40,7 @@ class OneCoreImpl : OneCore {
     private lateinit var notifications: Notifications
     private lateinit var commandRegistry: CommandRegistry
     private lateinit var httpClient: OkHttpClient
-    private lateinit var colorUtils: ColorUtils
+    private lateinit var colorHelper: ColorHelper
 
     override fun initialize(event: InitializationEvent) {
         MinecraftForge.EVENT_BUS.register(ForgeEventExtender())
@@ -53,7 +53,7 @@ class OneCoreImpl : OneCore {
         notifications = Notifications()
         commandRegistry = CommandRegistryImpl().also { it.registerCommand(OneCoreCommand()) }
         httpClient = OkHttpClient()
-        colorUtils = ColorUtils()
+        colorHelper = ColorHelper()
     }
 
     override fun logger() = logger
@@ -68,5 +68,5 @@ class OneCoreImpl : OneCore {
     override fun notifications() = notifications
     override fun commandRegistry() = commandRegistry
     override fun httpClient() = httpClient
-    override fun colorUtils() = colorUtils
+    override fun colorHelper() = colorHelper
 }
