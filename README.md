@@ -10,5 +10,5 @@ All in one Minecraft core modules.\
 
 ## For more information please visit the documentation at: <https://docs.woverflow.cc/onecore>
 
-[bugreps]: https://github.com/W-OVERFLOW/W-CORE/issues
-[featreqs]: https://github.com/W-OVERFLOW/W-Core/issues
+[bugreps]: https://github.com/W-OVERFLOW/OneCore/issues/new
+[featreqs]: https://github.com/W-OVERFLOW/OneCore/issues/new
